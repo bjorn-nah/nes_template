@@ -431,6 +431,7 @@ FamiToneMusicPause:
 
 	rts
 
+
 ;------------------------------------------------------------------------------
 ; update FamiTone state, should be called every NMI
 ; in: none
@@ -609,7 +610,6 @@ FamiToneUpdate:
 	sta FT_MR_PULSE1_H
 .ch1prev:
 	lda FT_CH1_VOLUME
-	and ch1
 .ch1cut:
 	ora FT_CH1_DUTY
 	sta FT_MR_PULSE1_V
@@ -643,7 +643,6 @@ FamiToneUpdate:
 	sta FT_MR_PULSE2_H
 .ch2prev:
 	lda FT_CH2_VOLUME
-	and ch2
 .ch2cut:
 	ora FT_CH2_DUTY
 	sta FT_MR_PULSE2_V
@@ -669,7 +668,6 @@ FamiToneUpdate:
 	adc _FT2NoteTableMSB,x
 	sta FT_MR_TRI_H
 	lda FT_CH3_VOLUME
-	and ch3
 .ch3cut:
 	ora #$80
 	sta FT_MR_TRI_V
@@ -688,7 +686,6 @@ FamiToneUpdate:
 	ora <FT_TEMP_VAR1
 	sta FT_MR_NOISE_F
 	lda FT_CH4_VOLUME
-	and ch4
 .ch4cut:
 	ora #$f0
 	sta FT_MR_NOISE_V

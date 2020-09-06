@@ -8,9 +8,9 @@ PhysicsMachine:
 	ADC VectorY
 	STA PosY
 	
-	CMP ReferenceY	;si PosY > ReferenceY
+	CMP #$6F	;si PosY > Sol
 	BCC .noReset
-	LDA ReferenceY
+	LDA #$6F
 	STA PosY
 	LDA #$00
 	STA state_tics

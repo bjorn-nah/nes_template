@@ -11,7 +11,6 @@ GameInit:
   LDA #$6F
   STA PosX
   STA PosY
-  STA ReferenceY
   
   LDA #$00
   STA player_stp
@@ -22,15 +21,15 @@ GameInit:
   sta PPUADDR
   sta PPUADDR
 
-  ldx #LOW(mergez_party_data)	;initialize using the first song data, as it contains the DPCM sound effect
-  ldy #HIGH(mergez_party_data)
-  lda #$80	;PAL mode
-  jsr FamiToneInit		;init FamiTone
+  ;ldx #LOW(mergez_party_data)	;initialize using the first song data, as it contains the DPCM sound effect
+  ;ldy #HIGH(mergez_party_data)
+  ;lda #$80	;PAL mode
+  ;jsr FamiToneInit		;init FamiTone
   
   JSR enableNmi
   
-  lda #0
-  jsr FamiToneMusicPlay
+  ;lda #0
+  ;jsr FamiToneMusicPlay
   
   LDA #NORM
   STA substate
@@ -44,15 +43,15 @@ NoGameInit:
   LDA temp
   STA buttons
 
-  JSR PStateMachine
-  JSR PhysicsMachine
+  ;JSR PStateMachine
+  ;JSR PhysicsMachine
   
-  JSR LoadPlayerSprite
-  JSR setPosPlrSpr
+  ;JSR LoadPlayerSprite
+  ;JSR setPosPlrSpr
   
   ;make a game there
   
-  jsr FamiToneUpdate  
+  ;jsr FamiToneUpdate  
 
 
   JMP GameEngineDone

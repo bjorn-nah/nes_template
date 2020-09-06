@@ -1,0 +1,8 @@
+# exclude NESASM3
+NESASM3.exe
+
+# exclude Nes build files
+*.nes
+
+# exclude Emulator files build files
+*.fns

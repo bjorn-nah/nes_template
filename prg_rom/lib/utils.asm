@@ -315,90 +315,90 @@ getPlrSprAdr:
   LDA player_stp
   CMP #$00
   BNE notStp00
-  LDA #LOW(runner_0)
+  LDA #LOW(sprite_0)
   STA pointerLo
-  LDA #HIGH(runner_0)
+  LDA #HIGH(sprite_0)
   STA pointerHi
   JMP goodStpReach
 notStp00:
 
   CMP #$01
   BNE notStp01
-  LDA #LOW(runner_1)
+  LDA #LOW(sprite_1)
   STA pointerLo
-  LDA #HIGH(runner_1)
+  LDA #HIGH(sprite_1)
   STA pointerHi
   JMP goodStpReach
 notStp01: 
 
   CMP #$02
   BNE notStp02
-  LDA #LOW(runner_2)
+  LDA #LOW(sprite_2)
   STA pointerLo
-  LDA #HIGH(runner_2)
+  LDA #HIGH(sprite_2)
   STA pointerHi
   JMP goodStpReach
 notStp02: 
 
   CMP #$03
   BNE notStp03
-  LDA #LOW(runner_3)
+  LDA #LOW(sprite_3)
   STA pointerLo
-  LDA #HIGH(runner_3)
+  LDA #HIGH(sprite_3)
   STA pointerHi
   JMP goodStpReach
 notStp03:
  
   CMP #$04
   BNE notStp04
-  LDA #LOW(runner_4)
+  LDA #LOW(sprite_4)
   STA pointerLo
-  LDA #HIGH(runner_4)
+  LDA #HIGH(sprite_4)
   STA pointerHi
   JMP goodStpReach
 notStp04:
 
   CMP #$05
   BNE notStp05
-  LDA #LOW(runner_5)
+  LDA #LOW(sprite_5)
   STA pointerLo
-  LDA #HIGH(runner_5)
+  LDA #HIGH(sprite_5)
   STA pointerHi
   JMP goodStpReach
 notStp05:
  
   CMP #$06
   BNE notStp06
-  LDA #LOW(runner_6)
+  LDA #LOW(sprite_6)
   STA pointerLo
-  LDA #HIGH(runner_6)
+  LDA #HIGH(sprite_6)
   STA pointerHi
   JMP goodStpReach
 notStp06:
 
   CMP #$07
   BNE notStp07
-  LDA #LOW(runner_7)
+  LDA #LOW(sprite_7)
   STA pointerLo
-  LDA #HIGH(runner_7)
+  LDA #HIGH(sprite_7)
   STA pointerHi
   JMP goodStpReach
 notStp07: 
 
   CMP #$08
   BNE notStp08
-  LDA #LOW(runner_8)
+  LDA #LOW(sprite_8)
   STA pointerLo
-  LDA #HIGH(runner_8)
+  LDA #HIGH(sprite_8)
   STA pointerHi
   JMP goodStpReach
 notStp08: 
 
   CMP #$09
   BNE notStp09
-  LDA #LOW(runner_9)
+  LDA #LOW(sprite_9)
   STA pointerLo
-  LDA #HIGH(runner_9)
+  LDA #HIGH(sprite_9)
   STA pointerHi
   JMP goodStpReach
 notStp09: 

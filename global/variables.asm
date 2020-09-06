@@ -1,11 +1,5 @@
 ;first 3bytes used by famitone
-
   .rsset $0003  ;;start variables at ram location 03
-;famitone chanel volume  
-ch1			.rs 1	;03
-ch2			.rs 1	;04
-ch3			.rs 1	;05
-ch4			.rs 1	;07
 
 ;unrle variables
 RLE_LOW		.rs 1
@@ -24,6 +18,11 @@ cameraY		.rs 1
 
 PosX		.rs 1	;13
 PosY		.rs 1	;14
+VectorX		.rs 1	;15
+VectorDecX	.rs 1	;16
+VectorY		.rs 1	;15
+VectorDecY	.rs 1	;16
+jump_vector .rs 1	;18
 
 player_state	.rs 1
 player_stp	.rs 1

@@ -1,9 +1,9 @@
 Template for my nes asm projets
-uses :
+# uses :
 - neasm3 : https://github.com/munshkr/nesasm
 - famitone 2 : https://shiru.untergrund.net/code.shtml
 
-Structure :
+# Structure :
 - chrom :
 	stuff to put in chr_rom. If you want to put other things here, you are mad.
 	- chr_rom.asm : edit is file to adjust to your chr sources
