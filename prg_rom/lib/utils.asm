@@ -30,22 +30,22 @@ printTxt:
   RTS
   
 printTxtBuff:
-  LDX pointerBuffer
+  LDX pointerBufferW
   LDY printStart
   LDA printLong
-  STA PPUBUFFER, x
+  STA PPUBUFFERW, x
   INX
   LDA pointerPPUHi
-  STA PPUBUFFER, x
+  STA PPUBUFFERW, x
   INX
   LDA pointerPPULo
-  STA PPUBUFFER, x
+  STA PPUBUFFERW, x
   INX
 printTxtBuffLoop:
   LDA text, y
   SEC
   SBC #$20
-  STA PPUBUFFER, x
+  STA PPUBUFFERW, x
   INX
   INY
   LDA printLong
@@ -54,7 +54,7 @@ printTxtBuffLoop:
   STA printLong
   CMP #$00
   BNE printTxtBuffLoop
-  STX pointerBuffer
+  STX pointerBufferW
   RTS
 
 clearTxt:
@@ -67,25 +67,25 @@ clearTxt:
   RTS
 
 clearTxtBuff:
-  LDX pointerBuffer
+  LDX pointerBufferW
   LDA printLong
-  STA PPUBUFFER, x
+  STA PPUBUFFERW, x
   TAY
   INX
   LDA pointerPPUHi
-  STA PPUBUFFER, x
+  STA PPUBUFFERW, x
   INX
   LDA pointerPPULo
-  STA PPUBUFFER, x
+  STA PPUBUFFERW, x
   INX
 clearTxtBuffLoop:
   LDA #CLEARTULE
-  STA PPUBUFFER, x
+  STA PPUBUFFERW, x
   INX
   DEY
   CPY #$00
   BNE clearTxtBuffLoop
-  STX pointerBuffer
+  STX pointerBufferW
   RTS
   
 clearScreenBuff:
@@ -95,20 +95,20 @@ clearScreenBuff:
   ;STA pointerLo
   ;LDA #$20
   ;STA pointerHi
-  LDX pointerBuffer
+  LDX pointerBufferW
   LDA #$20			;size of a line
-  STA PPUBUFFER, x
+  STA PPUBUFFERW, x
   TAY
   INX
   LDA pointerHi
-  STA PPUBUFFER, x
+  STA PPUBUFFERW, x
   INX
   LDA pointerLo
-  STA PPUBUFFER, x
+  STA PPUBUFFERW, x
   INX
 LineLoopBuff:
   LDA #CLEARTULE
-  STA PPUBUFFER, x
+  STA PPUBUFFERW, x
   INX
   DEY
   CPY #$00
@@ -138,15 +138,15 @@ noResetCB:
   RTS
   
 printVar:
-  LDY pointerBuffer
+  LDY pointerBufferW
   LDA #$02
-  STA PPUBUFFER, y
+  STA PPUBUFFERW, y
   INY
   LDA pointerPPUHi
-  STA PPUBUFFER, y
+  STA PPUBUFFERW, y
   INY
   LDA pointerPPULo
-  STA PPUBUFFER, y
+  STA PPUBUFFERW, y
   INY
   
   LDA temp
@@ -161,7 +161,7 @@ printVar:
   LDA temp1
   CLC
   ADC temp2
-  STA PPUBUFFER, y
+  STA PPUBUFFERW, y
   INY
   
   LDA temp
@@ -171,10 +171,10 @@ printVar:
   LDA temp1
   CLC
   ADC temp2
-  STA PPUBUFFER, y
+  STA PPUBUFFERW, y
   INY
   
-  STY pointerBuffer
+  STY pointerBufferW
   
   RTS
   
@@ -240,21 +240,46 @@ setPPUADDR:
 ;	- pointerPPU	: position
 ;		  arg1 		: tule
 drawPPU:
-	LDX pointerBuffer
+	LDX pointerBufferW
 	LDA #$01
-	STA PPUBUFFER, x
+	STA PPUBUFFERW, x
 	INX
 	LDA pointerPPUHi
-	STA PPUBUFFER, x
+	STA PPUBUFFERW, x
 	INX
 	LDA pointerPPULo
-	STA PPUBUFFER, x
+	STA PPUBUFFERW, x
 	INX
 
 	LDA arg1
-	STA PPUBUFFER, x
+	STA PPUBUFFERW, x
 	INX
-	STX pointerBuffer
+	STX pointerBufferW
+	
+	RTS
+	
+; read PPU fonction
+; inputs :
+;	Y	: Y position au tile to read
+;	X	: X position au tile to read
+;	arg1	: Hi part of memory dress to stock the result
+;	arg2	: Lo part of memory dress to stock the result
+readTilePPU:
+	JSR setPPUADDR
+	LDX pointerBufferL
+	LDA pointerPPUHi
+	STA PPUBUFFERL, x
+	INX 
+	LDA pointerPPULo
+	STA PPUBUFFERL, x
+	INX
+	LDA arg1
+	STA PPUBUFFERL, x
+	INX 
+	LDA arg2
+	STA PPUBUFFERL, x
+	INX
+	STX pointerBufferL
 	
 	RTS
 
@@ -438,48 +463,94 @@ enableNmi:
   STA nmiStatus
   RTS
   
-processNmiBuffer:
+processNmiBufferW:
   LDX #$00
   LDA PPUSTATUS
-loadBuffer:
+.loadBuffer:
   ;load word length, if 00 then is the end of buffer
   
-  LDA PPUBUFFER, x
-  BEQ endBuffer
+  LDA PPUBUFFERW, x
+  BEQ .endBuffer
   TAY
   INX
   ;load adress to write
-  LDA PPUBUFFER, x
+  LDA PPUBUFFERW, x
   STA PPUADDR
   INX
-  LDA PPUBUFFER, x
+  LDA PPUBUFFERW, x
   STA PPUADDR
   INX
   ;load word
-loadBufferWord:
-  LDA PPUBUFFER, x
+.loadBufferWord:
+  LDA PPUBUFFERW, x
   STA PPUDATA
   INX
   DEY
   CPY #$00
-  BNE loadBufferWord
+  BNE .loadBufferWord
 
-  JMP loadBuffer
+  JMP .loadBuffer
   
-endBuffer:
+.endBuffer:
   RTS
-  
+
+; structure of the buffer :
+; all the words are 6 bits long:
+; - Hi part of tule to read
+; - Lo part of tule to read
+; - Hi part of the adress to stock the tule value
+; - Lo part of the adress to stock the tule value
+; if Hi part of tule to read = 0 then that's the end of the buffer
+processNmiBufferL:
+	LDX #$00
+	LDY #$00
+.loadBuffer:
+	LDA PPUBUFFERL, x
+	BEQ .endBuffer
+	STA PPUADDR
+	INX
+	LDA PPUBUFFERL, x
+	STA PPUADDR
+	INX
+	;load adress to stock
+	LDA PPUBUFFERL, x
+	STA pointerNMIHi
+	INX
+	LDA PPUBUFFERL, x
+	STA pointerNMILo
+	INX
+	LDA PPUDATA		; Load first fake value
+	LDA PPUDATA
+	STA [pointerNMILo], y	; store tile value
+
+	JMP .loadBuffer
+.endBuffer:	
+	RTS
+	
+
+; clear write and load buffers
 clearBuffer:
-  LDX pointerBuffer
+  LDX pointerBufferW
   LDA #$00
-clearBufferLoop:
-  STA PPUBUFFER, x
+.clearBufferLoop:
+  STA PPUBUFFERW, x
   CPX #$00
-  BEQ endClearBuffer
+  BEQ .endClearBuffer
   DEX 
-  JMP clearBufferLoop
-endClearBuffer:
-  STA pointerBuffer
+  JMP .clearBufferLoop
+.endClearBuffer:
+  STA pointerBufferW
+  
+  LDX pointerBufferL
+  LDA #$00
+.1:
+  STA PPUBUFFERL, x
+  CPX #$00
+  BEQ .2
+  DEX 
+  JMP .1
+.2:
+  STA pointerBufferL
   RTS
   
 ;RLE decompressor by Shiru (NESASM version)

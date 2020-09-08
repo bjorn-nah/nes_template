@@ -7,7 +7,7 @@ RLE_HIGH	.rs 1
 RLE_TAG		.rs 1
 RLE_BYTE	.rs 1
 
-time		.rs 1	;0B
+time		.rs 1	;07
 buttons		.rs 1	;0C
 gamestate	.rs 1	;0D
 substate	.rs 1	;0E
@@ -30,6 +30,7 @@ player_tics	.rs 1
 state_tics	.rs 1
 
 arg1		.rs 1
+arg2		.rs 1
 
 printLong	.rs 1	;
 printStart	.rs 1
@@ -39,7 +40,10 @@ pointer1Lo	.rs 1	;1A
 pointer1Hi	.rs 1	;1B
 pointerPPULo	.rs 1
 pointerPPUHi	.rs 1
-pointerBuffer	.rs 1
+pointerNMILo	.rs 1
+pointerNMIHi	.rs 1
+pointerBufferW	.rs 1
+pointerBufferL	.rs 1
 temp		.rs 1	;22
 temp1		.rs 1	;23
 temp2		.rs 1	;
