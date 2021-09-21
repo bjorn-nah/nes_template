@@ -15,7 +15,8 @@ NMI:
   LDA #$02
   STA OAMDMA       ; set the high byte (02) of the RAM address, start the transfer
   
-  JSR processNmiBuffer
+  JSR processNmiBufferW
+  JSR processNmiBufferL
   
   LDA igPPUCTRL
   STA PPUCTRL
